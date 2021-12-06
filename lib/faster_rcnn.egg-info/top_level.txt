@@ -1,5 +1,4 @@
 datasets
 model
-originmodel
 roi_da_data_layer
 roi_data_layer

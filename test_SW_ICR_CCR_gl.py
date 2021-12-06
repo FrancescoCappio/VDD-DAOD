@@ -67,7 +67,7 @@ def parse_args():
         "--net",
         dest="net",
         help="vgg16, res50, res101, res152",
-        default="res101",
+        default="res50",
         type=str,
     )
     parser.add_argument(
@@ -230,6 +230,22 @@ if __name__ == "__main__":
         args.imdb_name = "bdd_night_rainy"
         args.imdbval_name = "bdd_night_rainy"
         args.set_cfgs_target = ['ANCHOR_SCALES', '[8, 16, 32]', 'ANCHOR_RATIOS', '[0.5,1,2]', 'MAX_NUM_GT_BOXES', '20']
+    elif args.dataset == "watercolor":
+        n_classes = 20
+        args.imdb_name = "water_train"
+        args.imdbval_name = "water_test"
+        args.set_cfgs_target = ['ANCHOR_SCALES', '[8, 16, 32]', 'ANCHOR_RATIOS', '[0.5,1,2]', 'MAX_NUM_GT_BOXES', '20']
+    elif args.dataset == "clipart":
+        n_classes = 20
+        args.imdb_name = "clipart_train"
+        args.imdbval_name = "clipart_test"
+        args.set_cfgs_target = ['ANCHOR_SCALES', '[8, 16, 32]', 'ANCHOR_RATIOS', '[0.5,1,2]', 'MAX_NUM_GT_BOXES', '20']
+    elif args.dataset == "social_bikes":
+        n_classes = 20
+        args.imdb_name = "social_bikes_train"
+        args.imdbval_name = "social_bikes_test"
+        args.set_cfgs_target = ['ANCHOR_SCALES', '[8, 16, 32]', 'ANCHOR_RATIOS', '[0.5,1,2]', 'MAX_NUM_GT_BOXES', '20']
+
 
     args.cfg_file = (
         "cfgs/{}_ls.yml".format(args.net)
@@ -297,8 +313,14 @@ if __name__ == "__main__":
         )
     elif args.net == "res50":
         fasterRCNN = resnet(
-            imdb.classes, 50, pretrained=False, class_agnostic=args.class_agnostic
+            imdb.classes,
+            50,
+            pretrained=True,
+            class_agnostic=args.class_agnostic,
+            lc=args.lc,
+            gc=args.gc,
         )
+
     elif args.net == "res152":
         fasterRCNN = resnet(
             imdb.classes, 152, pretrained=False, class_agnostic=args.class_agnostic
@@ -363,7 +385,8 @@ if __name__ == "__main__":
     num_images = len(imdb.image_index)
     all_boxes = [[[] for _ in xrange(num_images)] for _ in xrange(imdb.num_classes)]
 
-    output_dir = get_output_dir(imdb, save_name)
+    #output_dir = get_output_dir(imdb, save_name)
+    output_dir = args.output_dir
     dataset = roibatchLoader(
         roidb,
         ratio_list,

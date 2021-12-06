@@ -55,11 +55,10 @@ def parse_args():
         "--dataset_t",
         dest="dataset_t",
         help="test dataset",
-        default="df",
         type=str,
     )
     parser.add_argument(
-        "--net", dest="net", help="vgg16, res101", default="res101", type=str
+        "--net", dest="net", help="vgg16, res50, res101", default="res50", type=str
     )
     parser.add_argument(
         "--pretrained_path",
@@ -187,7 +186,7 @@ def parse_args():
         action="store_true",
     )
     parser.add_argument(
-        "--da_use_contex",
+        "--da_use_context",
         dest="da_use_contex",
         help="whether use context vector for instance da",
         action="store_true",
@@ -205,7 +204,7 @@ def parse_args():
         "--max_epochs",
         dest="max_epochs",
         help="max epoch for train",
-        default=20,
+        default=8,
         type=int,
     )
     parser.add_argument(
@@ -274,18 +273,18 @@ if __name__ == "__main__":
     print("Called with args:")
     print(args)
 
-    # if args.dataset == "pascal_voc":
-    #     print("loading our dataset...........")
-    #     args.imdb_name = "voc_2007_train"
-    #     args.imdbval_name = "voc_2007_test"
-    #     args.set_cfgs = [
-    #         "ANCHOR_SCALES",
-    #         "[4,8,16,32]",
-    #         "ANCHOR_RATIOS",
-    #         "[0.5,1,2]",
-    #         "MAX_NUM_GT_BOXES",
-    #         "50",
-    #     ]
+    if args.dataset == "pascal_voc":
+        print("loading our dataset...........")
+        args.imdb_name = "voc_2007_train"
+        args.imdbval_name = "voc_2007_test"
+        args.set_cfgs = [
+            "ANCHOR_SCALES",
+            "[4,8,16,32]",
+            "ANCHOR_RATIOS",
+            "[0.5,1,2]",
+            "MAX_NUM_GT_BOXES",
+            "50",
+        ]
     # elif args.dataset == "cityscape":
     #     print("loading our dataset...........")
     #     args.s_imdb_name = "cityscape_2007_train_s"
@@ -344,17 +343,77 @@ if __name__ == "__main__":
     #         "20",
     #     ]
 
-    # elif args.dataset == "pascal_voc_0712":
-    #     args.imdb_name = "voc_2007_trainval+voc_2012_trainval"
-    #     args.imdbval_name = "voc_2007_test"
-    #     args.set_cfgs = [
-    #         "ANCHOR_SCALES",
-    #         "[8, 16, 32]",
-    #         "ANCHOR_RATIOS",
-    #         "[0.5,1,2]",
-    #         "MAX_NUM_GT_BOXES",
-    #         "20",
-    #     ]
+    elif args.dataset == "pascal_voc_0712":
+        args.imdb_name = "voc_2007_trainval+voc_2012_trainval"
+        args.imdbval_name = "voc_2007_test"
+        args.set_cfgs = ['ANCHOR_SCALES', '[8, 16, 32]', 'ANCHOR_RATIOS', '[0.5,1,2]', 'MAX_NUM_GT_BOXES', '20']
+
+    elif args.dataset == "watercolor":
+        args.imdb_name = "voc_2007_trainval+voc_2012_trainval"
+        args.imdbval_name = "voc_2007_test"
+        args.set_cfgs = ['ANCHOR_SCALES', '[8, 16, 32]', 'ANCHOR_RATIOS', '[0.5,1,2]', 'MAX_NUM_GT_BOXES', '20']
+        args.imdb_name_target = "watercolor_train"
+        args.imdbval_name_target = "watercolor_test"
+        args.set_cfgs_target = ['ANCHOR_SCALES', '[8, 16, 32]', 'ANCHOR_RATIOS', '[0.5,1,2]', 'MAX_NUM_GT_BOXES', '20']
+    elif args.dataset == "watercolor_10":
+        args.imdb_name = "voc_2007_trainval+voc_2012_trainval"
+        args.imdbval_name = "voc_2007_test"
+        args.set_cfgs = ['ANCHOR_SCALES', '[8, 16, 32]', 'ANCHOR_RATIOS', '[0.5,1,2]', 'MAX_NUM_GT_BOXES', '20']
+        args.imdb_name_target = "watercolor10_train"
+        args.imdbval_name_target = "watercolor_test"
+        args.set_cfgs_target = ['ANCHOR_SCALES', '[8, 16, 32]', 'ANCHOR_RATIOS', '[0.5,1,2]', 'MAX_NUM_GT_BOXES', '20']
+
+    elif args.dataset == "comic":
+        args.imdb_name = "voc_2007_trainval+voc_2012_trainval"
+        args.imdbval_name = "voc_2007_test"
+        args.set_cfgs = ['ANCHOR_SCALES', '[8, 16, 32]', 'ANCHOR_RATIOS', '[0.5,1,2]', 'MAX_NUM_GT_BOXES', '20']
+        args.imdb_name_target = "comic_train"
+        args.imdbval_name_target = "comic_test"
+        args.set_cfgs_target = ['ANCHOR_SCALES', '[8, 16, 32]', 'ANCHOR_RATIOS', '[0.5,1,2]', 'MAX_NUM_GT_BOXES', '20']
+    elif args.dataset == "comic_10":
+        args.imdb_name = "voc_2007_trainval+voc_2012_trainval"
+        args.imdbval_name = "voc_2007_test"
+        args.set_cfgs = ['ANCHOR_SCALES', '[8, 16, 32]', 'ANCHOR_RATIOS', '[0.5,1,2]', 'MAX_NUM_GT_BOXES', '20']
+        args.imdb_name_target = "comic10_train"
+        args.imdbval_name_target = "comic_test"
+        args.set_cfgs_target = ['ANCHOR_SCALES', '[8, 16, 32]', 'ANCHOR_RATIOS', '[0.5,1,2]', 'MAX_NUM_GT_BOXES', '20']
+
+
+    elif args.dataset == "social_bikes":
+        args.imdb_name = "voc_2007_trainval+voc_2012_trainval"
+        args.imdbval_name = "voc_2007_test"
+        args.set_cfgs = ['ANCHOR_SCALES', '[8, 16, 32]', 'ANCHOR_RATIOS', '[0.5,1,2]', 'MAX_NUM_GT_BOXES', '20']
+        args.imdb_name_target = "social_bikes_train"
+        args.imdbval_name_target = "social_bikes_test"
+        args.set_cfgs_target = ['ANCHOR_SCALES', '[8, 16, 32]', 'ANCHOR_RATIOS', '[0.5,1,2]', 'MAX_NUM_GT_BOXES', '20']
+
+    elif args.dataset == "social_bikes_10":
+        args.imdb_name = "voc_2007_trainval+voc_2012_trainval"
+        args.imdbval_name = "voc_2007_test"
+        args.set_cfgs = ['ANCHOR_SCALES', '[8, 16, 32]', 'ANCHOR_RATIOS', '[0.5,1,2]', 'MAX_NUM_GT_BOXES', '20']
+        args.imdb_name_target = "social_bikes10_train"
+        args.imdbval_name_target = "social_bikes_test"
+        args.set_cfgs_target = ['ANCHOR_SCALES', '[8, 16, 32]', 'ANCHOR_RATIOS', '[0.5,1,2]', 'MAX_NUM_GT_BOXES', '20']
+
+
+    elif args.dataset == "clipart":
+        args.imdb_name = "voc_2007_trainval+voc_2012_trainval"
+        args.imdbval_name = "voc_2007_test"
+        args.set_cfgs = ['ANCHOR_SCALES', '[8, 16, 32]', 'ANCHOR_RATIOS', '[0.5,1,2]', 'MAX_NUM_GT_BOXES', '20']
+        args.imdb_name_target = "clipart_train"
+        args.imdbval_name_target = "clipart_test"
+        args.set_cfgs_target = ['ANCHOR_SCALES', '[8, 16, 32]', 'ANCHOR_RATIOS', '[0.5,1,2]', 'MAX_NUM_GT_BOXES', '20']
+
+    elif args.dataset == "clipart_10":
+        args.imdb_name = "voc_2007_trainval+voc_2012_trainval"
+        args.imdbval_name = "voc_2007_test"
+        args.set_cfgs = ['ANCHOR_SCALES', '[8, 16, 32]', 'ANCHOR_RATIOS', '[0.5,1,2]', 'MAX_NUM_GT_BOXES', '20']
+        args.imdb_name_target = "clipart10_train"
+        args.imdbval_name_target = "clipart_test"
+        args.set_cfgs_target = ['ANCHOR_SCALES', '[8, 16, 32]', 'ANCHOR_RATIOS', '[0.5,1,2]', 'MAX_NUM_GT_BOXES', '20']
+
+
+
     # elif args.dataset == "sim10k":
     #     print("loading our dataset...........")
     #     args.s_imdb_name = "sim10k_2019_train"
@@ -362,7 +421,7 @@ if __name__ == "__main__":
     #     args.s_imdbtest_name = "sim10k_2019_val"
     #     args.t_imdbtest_name = "cityscapes_car_2019_val"
 
-    if args.dataset == "dc":
+    elif args.dataset == "dc":
         args.imdb_name = "bdd_daytime_clear"
         args.imdbval_name = "bdd_daytime_clear"
         args.set_cfgs = ['ANCHOR_SCALES', '[8, 16, 32]', 'ANCHOR_RATIOS', '[0.5,1,2]', 'MAX_NUM_GT_BOXES', '20']
@@ -428,7 +487,7 @@ if __name__ == "__main__":
 
     print("source {:d} target {:d} roidb entries".format(len(s_roidb), len(t_roidb)))
 
-    output_dir = args.save_dir +  "/" + args.dataset +  "/" + args.dataset_t
+    output_dir = args.save_dir +  "/" + args.dataset +  "/" + args.imdb_name_target
     # output_dir = args.save_dir
     if not os.path.exists(output_dir):
         os.makedirs(output_dir)
@@ -513,6 +572,16 @@ if __name__ == "__main__":
             lc=args.lc,
             gc=args.gc,
             da_use_contex=args.da_use_contex,
+        )
+
+    elif args.net == "res50":
+        fasterRCNN = resnet(
+            s_imdb.classes,
+            50,
+            pretrained=True,
+            class_agnostic=args.class_agnostic,
+            lc=args.lc,
+            gc=args.gc,
         )
 
     elif args.net == "res101":
@@ -798,7 +867,9 @@ if __name__ == "__main__":
             cfg.POOLING_MODE = checkpoint["pooling_mode"]
         print("loaded checkpoint %s" % (load_name))
 
-    iters_per_epoch = int(s_train_size / args.batch_size)
+    #iters_per_epoch = int(s_train_size / args.batch_size)
+    iters_per_epoch = 10000 #int(s_train_size / args.batch_size)
+
     if args.ef:
         FL = EFocalLoss(class_num=2, gamma=args.gamma)
     else:
