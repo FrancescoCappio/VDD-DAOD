@@ -20,6 +20,7 @@ import uuid
 import scipy.io as sio
 import xml.etree.ElementTree as ET
 import pickle
+import random
 from .imdb import imdb
 from .imdb import ROOT_DIR
 from . import ds_utils
@@ -40,17 +41,22 @@ except NameError:
 
 
 class cityscape(imdb):
-    def __init__(self, image_set, devkit_path=None):
+    def __init__(self, image_set, devkit_path=None,data_split=""):
         imdb.__init__(self, 'cityscape_' + image_set)
         self._year = 2007
         self._image_set = image_set
-        self._devkit_path = cfg_d.CITYSCAPE
+        self._devkit_path = 'data/voc_cityscapes/'
         self._data_path = os.path.join(self._devkit_path)
         self._classes = ('__background__',  # always index 0
                          'bus', 'bicycle', 'car', 'motorcycle', 'person', 'rider', 'train', 'truck')
         self._class_to_ind = dict(zip(self.classes, xrange(self.num_classes)))
         self._image_ext = '.jpg'
         self._image_index = self._load_image_set_index()
+        if not data_split == "":
+            print(f"Loading only {data_split} samples from target dataset")
+            n_samples = int(data_split)
+            self._image_index = random.choices(self._image_index, k=n_samples)
+
         # Default to roidb handler
         # self._roidb_handler = self.selective_search_roidb
         self._roidb_handler = self.gt_roidb
@@ -117,7 +123,6 @@ class cityscape(imdb):
         Return the database of ground-truth regions of interest.
 
         This function loads/saves from/to a cache file to speed up future calls.
-        """
         cache_file = os.path.join(self.cache_path, self.name + '_gt_roidb.pkl')
         if os.path.exists(cache_file):
             with open(cache_file, 'rb') as fid:
@@ -125,11 +130,14 @@ class cityscape(imdb):
             print('{} gt roidb loaded from {}'.format(self.name, cache_file))
             return roidb
 
+        """
         gt_roidb = [self._load_pascal_annotation(index)
                     for index in self.image_index]
+        """
         with open(cache_file, 'wb') as fid:
             pickle.dump(gt_roidb, fid, pickle.HIGHEST_PROTOCOL)
         print('wrote gt roidb to {}'.format(cache_file))
+        """
 
         return gt_roidb
 

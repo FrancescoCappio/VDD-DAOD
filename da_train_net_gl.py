@@ -413,6 +413,25 @@ if __name__ == "__main__":
         args.set_cfgs_target = ['ANCHOR_SCALES', '[8, 16, 32]', 'ANCHOR_RATIOS', '[0.5,1,2]', 'MAX_NUM_GT_BOXES', '20']
 
 
+    elif args.dataset == "city2foggy":
+        args.imdb_name = "cityscape_train_s"
+        args.imdbval_name = "cityscape_test_s"
+        args.set_cfgs = ['ANCHOR_SCALES', '[8, 16, 32]', 'ANCHOR_RATIOS', '[0.5,1,2]', 'MAX_NUM_GT_BOXES', '20']
+        args.imdb_name_target = "foggy_cityscape_foggy_train"
+        args.imdbval_name_target = "foggy_cityscape_foggy_test"
+        args.set_cfgs_target = ['ANCHOR_SCALES', '[8, 16, 32]', 'ANCHOR_RATIOS', '[0.5,1,2]', 'MAX_NUM_GT_BOXES', '20']
+
+    elif args.dataset == "city2foggy_10":
+        args.imdb_name = "cityscape_train_s"
+        args.imdbval_name = "cityscape_test_s"
+        args.set_cfgs = ['ANCHOR_SCALES', '[8, 16, 32]', 'ANCHOR_RATIOS', '[0.5,1,2]', 'MAX_NUM_GT_BOXES', '20']
+        args.imdb_name_target = "foggy_cityscape10_foggy_train"
+        args.imdbval_name_target = "foggy_cityscape_foggy_test"
+        args.set_cfgs_target = ['ANCHOR_SCALES', '[8, 16, 32]', 'ANCHOR_RATIOS', '[0.5,1,2]', 'MAX_NUM_GT_BOXES', '20']
+
+
+
+
 
     # elif args.dataset == "sim10k":
     #     print("loading our dataset...........")

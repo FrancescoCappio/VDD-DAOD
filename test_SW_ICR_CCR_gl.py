@@ -232,8 +232,8 @@ if __name__ == "__main__":
         args.set_cfgs_target = ['ANCHOR_SCALES', '[8, 16, 32]', 'ANCHOR_RATIOS', '[0.5,1,2]', 'MAX_NUM_GT_BOXES', '20']
     elif args.dataset == "watercolor":
         n_classes = 20
-        args.imdb_name = "water_train"
-        args.imdbval_name = "water_test"
+        args.imdb_name = "watercolor_train"
+        args.imdbval_name = "watercolor_test"
         args.set_cfgs_target = ['ANCHOR_SCALES', '[8, 16, 32]', 'ANCHOR_RATIOS', '[0.5,1,2]', 'MAX_NUM_GT_BOXES', '20']
     elif args.dataset == "clipart":
         n_classes = 20
@@ -245,6 +245,18 @@ if __name__ == "__main__":
         args.imdb_name = "social_bikes_train"
         args.imdbval_name = "social_bikes_test"
         args.set_cfgs_target = ['ANCHOR_SCALES', '[8, 16, 32]', 'ANCHOR_RATIOS', '[0.5,1,2]', 'MAX_NUM_GT_BOXES', '20']
+    elif args.dataset == "comic":
+        n_classes = 20
+        args.imdb_name = "comic_train"
+        args.imdbval_name = "comic_test"
+        args.set_cfgs_target = ['ANCHOR_SCALES', '[8, 16, 32]', 'ANCHOR_RATIOS', '[0.5,1,2]', 'MAX_NUM_GT_BOXES', '20']
+    elif args.dataset == "city2foggy":
+        n_classes = 7
+        args.imdb_name = "foggy_cityscape_foggy_train"
+        args.imdbval_name = "foggy_cityscape_foggy_test"
+        args.set_cfgs_target = ['ANCHOR_SCALES', '[8, 16, 32]', 'ANCHOR_RATIOS', '[0.5,1,2]', 'MAX_NUM_GT_BOXES', '20']
+
+
 
 
     args.cfg_file = (

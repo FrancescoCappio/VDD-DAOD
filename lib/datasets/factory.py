@@ -26,15 +26,21 @@ from datasets.multi_weather import bdd
 from datasets.voc_generic import voc_generic
 
 import numpy as np
-for split in ['train', 'trainval','val','test']:
+for split in ['train', 'trainval','val','test', 'train_s', 'test_s']:
     name = 'cityscape_{}'.format(split)
     __sets[name] = (lambda split=split : cityscape(split))
+for split in ['foggy_test', 'foggy_train']:
+    for data_split in ["", "10"]:
+        name = 'foggy_cityscape{}_{}'.format(data_split,split)
+        __sets[name] = (lambda split=split, data_split=data_split: cityscape(split,data_split=data_split))
+"""
 for split in ['train', 'trainval','val','test']:
     name = 'cityscape_car_{}'.format(split)
     __sets[name] = (lambda split=split : cityscape_car(split))
 for split in ['train', 'trainval','test']:
     name = 'foggy_cityscape_{}'.format(split)
     __sets[name] = (lambda split=split : foggy_cityscape(split))
+"""
 for split in ['train','val']:
     name = 'sim10k_{}'.format(split)
     __sets[name] = (lambda split=split : sim10k(split))
